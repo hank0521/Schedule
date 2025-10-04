@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 資料庫
+  postgres:
+    image: postgres:15-alpine
+    container_name: schedule_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-schedule}
+      POSTGRES_USER: ${POSTGRES_USER:-scheduleuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-schedulepass}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+      TZ: Asia/Taipei
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # 資料持久化
+      - postgres_data:/var/lib/postgresql/data
+      # 自動執行初始化 SQL (依檔名排序執行)
+      - ./Database:/docker-entrypoint-initdb.d:ro
+    networks:
+      - schedule_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-scheduleuser} -d ${POSTGRES_DB:-schedule}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin (PostgreSQL 管理介面，可選)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: schedule_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - schedule_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - tools  # 使用 --profile tools 才會啟動
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  schedule_network:
+    driver: bridge

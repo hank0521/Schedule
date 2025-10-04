@@ -31,6 +31,13 @@
 | **RetryIntervalSeconds** | INT | ✗ | 5 | 重試間隔秒數 |
 | **ExpectedHttpStatus** | INT | ✗ | 200 | 預期的 HTTP 狀態碼 |
 
+#### 執行狀態欄位
+
+| 欄位名稱 | 資料型別 | 必填 | 預設值 | 說明 |
+|---------|---------|------|--------|------|
+| **ExecutionStatus** | VARCHAR(20) | ✗ | 'Pending' | 執行狀態：Pending(待執行), Processing(執行中), Completed(已完成), Failed(失敗), Cancelled(已取消) |
+| **CurrentRetryCount** | INT | ✗ | 0 | 當前重試次數 |
+
 #### 執行結果欄位
 
 | 欄位名稱 | 資料型別 | 說明 |
@@ -65,6 +72,8 @@
 - `idx_schedulehttp_isenabled`: IsEnabled
 - `idx_schedulehttp_nextexecutetime`: NextExecuteTime
 - `idx_schedulehttp_createddate`: CreatedDate
+- `idx_schedulehttp_executionstatus`: ExecutionStatus
+- `idx_schedulehttp_progcode`: ProgCode
 
 ### 使用範例
 
@@ -139,6 +148,13 @@ VALUES (
 | **SmtpEnableSsl** | BOOLEAN | ✗ | TRUE | 是否啟用 SSL/TLS |
 | **SmtpTimeoutSeconds** | INT | ✗ | 30 | SMTP 連線逾時秒數 |
 
+#### 執行狀態欄位
+
+| 欄位名稱 | 資料型別 | 必填 | 預設值 | 說明 |
+|---------|---------|------|--------|------|
+| **ExecutionStatus** | VARCHAR(20) | ✗ | 'Pending' | 執行狀態：Pending(待執行), Processing(執行中), Completed(已完成), Failed(失敗), Cancelled(已取消) |
+| **CurrentRetryCount** | INT | ✗ | 0 | 當前重試次數 |
+
 #### 執行結果欄位
 
 | 欄位名稱 | 資料型別 | 說明 |
@@ -172,6 +188,8 @@ VALUES (
 - `idx_schedulemail_isenabled`: IsEnabled
 - `idx_schedulemail_nextexecutetime`: NextExecuteTime
 - `idx_schedulemail_createddate`: CreatedDate
+- `idx_schedulemail_executionstatus`: ExecutionStatus
+- `idx_schedulemail_progcode`: ProgCode
 
 ### 使用範例
 
@@ -250,6 +268,13 @@ VALUES (
 | **RetryCount** | INT | ✗ | 0 | 失敗時的重試次數 |
 | **RetryIntervalSeconds** | INT | ✗ | 5 | 重試間隔秒數 |
 
+#### 執行狀態欄位
+
+| 欄位名稱 | 資料型別 | 必填 | 預設值 | 說明 |
+|---------|---------|------|--------|------|
+| **ExecutionStatus** | VARCHAR(20) | ✗ | 'Pending' | 執行狀態：Pending(待執行), Processing(執行中), Completed(已完成), Failed(失敗), Cancelled(已取消) |
+| **CurrentRetryCount** | INT | ✗ | 0 | 當前重試次數 |
+
 #### 執行結果欄位
 
 | 欄位名稱 | 資料型別 | 說明 |
@@ -285,6 +310,8 @@ VALUES (
 - `idx_scheduleftp_isenabled`: IsEnabled
 - `idx_scheduleftp_nextexecutetime`: NextExecuteTime
 - `idx_scheduleftp_createddate`: CreatedDate
+- `idx_scheduleftp_executionstatus`: ExecutionStatus
+- `idx_scheduleftp_progcode`: ProgCode
 
 ### 使用範例
 
