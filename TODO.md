@@ -1,158 +1,200 @@
 # Schedule 專案待辦事項
 
-## 🔴 高優先級（核心功能）
+## 📋 開發任務清單
 
-### 1. 資料庫初始化
-- [ ] **建立 `Database/01_create_tables.sql`**
-  - [ ] tblScheduleHttp 資料表建立語句
-  - [ ] tblScheduleMail 資料表建立語句
-  - [ ] tblScheduleFTP 資料表建立語句
-  - [ ] tblScheduleException 資料表建立語句
-  - [ ] tblScheduleExecutionHistory 資料表建立語句
-  - [ ] 所有索引建立
-  - [ ] 欄位註解說明
-- [ ] 測試資料庫初始化流程
-  - [ ] 啟動 PostgreSQL 容器
-  - [ ] 驗證資料表自動建立
-  - [ ] 檢查索引是否正確
+### 階段一：FastAPI 基礎架構
+- [ ] 建立 FastAPI 專案基礎架構
+  - [ ] 安裝依賴套件 (FastAPI, SQLAlchemy, asyncpg, pydantic 等)
+  - [ ] 設定專案目錄結構
+  - [ ] 建立資料庫連線配置
+  - [ ] 設定環境變數管理
+  - [ ] 建立基礎 models, schemas, routers 架構
 
-### 2. Python FastAPI 服務開發
-- [ ] **建立 API 專案結構**
-  - [ ] 建立 `API/` 目錄
-  - [ ] 設定專案結構（main.py, routers, models, schemas, services）
-  - [ ] 建立 `requirements.txt`
-  - [ ] 設定 FastAPI 基本配置
-- [ ] **資料庫連線模組**
-  - [ ] 設定 SQLAlchemy ORM
-  - [ ] 建立資料庫連線池
-  - [ ] 建立 Models（對應 5 個資料表）
-- [ ] **API 端點開發**
-  - [ ] HTTP 排程 CRUD API
-  - [ ] Email 排程 CRUD API
-  - [ ] FTP 排程 CRUD API
-  - [ ] 執行歷史查詢 API
-  - [ ] 例外記錄查詢 API
-- [ ] **核心功能實作**
-  - [ ] HTTP 請求執行服務
-  - [ ] Email 發送服務（SMTP）
-  - [ ] FTP 檔案傳輸服務
-  - [ ] 重試機制
-  - [ ] 錯誤處理與日誌
-- [ ] **API 文件**
-  - [ ] Swagger/OpenAPI 自動文件
-  - [ ] API 使用範例
+### 階段二：排程任務管理 API (CRUD)
+- [ ] 實作 HTTP 排程任務的 CRUD API
+  - [ ] POST `/api/schedule/http` - 建立任務
+  - [ ] GET `/api/schedule/http` - 查詢列表
+  - [ ] GET `/api/schedule/http/{id}` - 查詢單一任務
+  - [ ] PUT `/api/schedule/http/{id}` - 更新任務
+  - [ ] DELETE `/api/schedule/http/{id}` - 刪除任務
+  - [ ] PATCH `/api/schedule/http/{id}/status` - 啟用/停用任務
 
-### 3. N8N 工作流程設計
-- [ ] **建立 N8N 容器**
-  - [ ] 在 `docker-compose.yml` 新增 N8N 服務
-  - [ ] 設定 N8N 環境變數
-  - [ ] 配置 N8N 與 PostgreSQL 連線
-- [ ] **工作流程開發**
-  - [ ] HTTP 排程監聽與執行流程
-  - [ ] Email 排程監聽與執行流程
-  - [ ] FTP 排程監聽與執行流程
-  - [ ] 錯誤處理與重試流程
-  - [ ] 執行結果記錄流程
-- [ ] **匯出工作流程**
-  - [ ] 建立 `N8N/workflows/` 目錄
-  - [ ] 匯出所有工作流程為 JSON
-  - [ ] 撰寫工作流程說明文件
+- [ ] 實作 Mail 排程任務的 CRUD API
+  - [ ] POST `/api/schedule/mail` - 建立任務
+  - [ ] GET `/api/schedule/mail` - 查詢列表
+  - [ ] GET `/api/schedule/mail/{id}` - 查詢單一任務
+  - [ ] PUT `/api/schedule/mail/{id}` - 更新任務
+  - [ ] DELETE `/api/schedule/mail/{id}` - 刪除任務
+  - [ ] PATCH `/api/schedule/mail/{id}/status` - 啟用/停用任務
 
-## 🟡 中優先級（完善功能）
+- [ ] 實作 FTP 排程任務的 CRUD API
+  - [ ] POST `/api/schedule/ftp` - 建立任務
+  - [ ] GET `/api/schedule/ftp` - 查詢列表
+  - [ ] GET `/api/schedule/ftp/{id}` - 查詢單一任務
+  - [ ] PUT `/api/schedule/ftp/{id}` - 更新任務
+  - [ ] DELETE `/api/schedule/ftp/{id}` - 刪除任務
+  - [ ] PATCH `/api/schedule/ftp/{id}/status` - 啟用/停用任務
 
-### 4. 測試
-- [ ] **單元測試**
-  - [ ] API 端點測試
-  - [ ] 服務邏輯測試
-  - [ ] 資料庫操作測試
-- [ ] **整合測試**
-  - [ ] 端到端流程測試
-  - [ ] N8N 工作流程測試
-- [ ] **測試覆蓋率**
-  - [ ] 設定 pytest-cov
-  - [ ] 達到 80% 覆蓋率目標
+### 階段三：執行服務實作 (供 N8N 呼叫)
+- [ ] 實作 HTTP 請求執行服務
+  - [ ] POST `/api/execute/http/{id}` - 執行 HTTP 任務
+  - [ ] 實作重試機制
+  - [ ] 實作執行狀態更新
+  - [ ] 實作結果記錄
 
-### 5. 部署與 CI/CD
-- [ ] **Docker 完整化**
-  - [ ] 建立 FastAPI Dockerfile
-  - [ ] 更新 docker-compose.yml（整合 API + N8N + PostgreSQL）
-  - [ ] 多階段建置優化
-- [ ] **CI/CD 流程**
-  - [ ] 設定 GitHub Actions
-  - [ ] 自動化測試流程
-  - [ ] 自動化部署流程
+- [ ] 實作 Email 發送服務
+  - [ ] POST `/api/execute/mail/{id}` - 執行 Mail 任務
+  - [ ] 實作 SMTP 連線
+  - [ ] 實作附件處理
+  - [ ] 實作多收件者處理
 
-### 6. 監控與日誌
-- [ ] **日誌系統**
-  - [ ] 整合 Python logging
-  - [ ] 結構化日誌輸出
-  - [ ] 日誌等級設定
-- [ ] **監控告警**
-  - [ ] 例外數量監控
-  - [ ] 執行失敗率告警
-  - [ ] 系統效能監控
+- [ ] 實作 FTP 傳輸服務
+  - [ ] POST `/api/execute/ftp/{id}` - 執行 FTP 任務
+  - [ ] 支援 FTP/FTPS/SFTP 協定
+  - [ ] 實作萬用字元檔案選取
+  - [ ] 實作上傳後刪除機制
 
-## 🟢 低優先級（優化項目）
+- [ ] 實作批次執行 API
+  - [ ] POST `/api/execute/pending` - 批次執行待執行任務
 
-### 7. 文件完善
-- [ ] **快速開始指南**
-  - [ ] 完成 README.md「快速開始」章節
-  - [ ] 安裝步驟說明
-  - [ ] 設定檔案範例
-  - [ ] 啟動指令說明
-- [ ] **開發文件**
-  - [ ] API 開發規範
-  - [ ] N8N 工作流程開發規範
-  - [ ] 常見問題 FAQ
-- [ ] **範例與教學**
-  - [ ] 使用範例程式碼
-  - [ ] 常見場景實作教學
+### 階段四：監控與記錄 API
+- [ ] 實作例外記錄查詢 API
+  - [ ] GET `/api/exceptions` - 查詢例外列表
+  - [ ] GET `/api/exceptions/{id}` - 查詢單一例外
+  - [ ] PATCH `/api/exceptions/{id}/resolve` - 標記為已解決
 
-### 8. 安全性強化
-- [ ] **密碼加密**
-  - [ ] SmtpPassword 加密儲存
-  - [ ] FtpPassword 加密儲存
-  - [ ] 密鑰管理機制
-- [ ] **API 安全**
-  - [ ] JWT 認證
-  - [ ] API Rate Limiting
-  - [ ] CORS 設定
+- [ ] 實作執行歷史查詢 API
+  - [ ] GET `/api/history` - 查詢執行歷史列表
+  - [ ] GET `/api/history/{id}` - 查詢單一執行記錄
+  - [ ] GET `/api/history/statistics` - 查詢執行統計
 
-### 9. 效能優化
-- [ ] **資料庫優化**
-  - [ ] 定期清理歷史記錄機制
-  - [ ] 資料表分割（如需要）
-  - [ ] 索引效能分析
-- [ ] **快取機制**
-  - [ ] Redis 整合
-  - [ ] 查詢結果快取
+### 階段五：系統功能
+- [ ] 實作排程任務執行狀態更新機制
+  - [ ] 自動更新 NextExecuteTime
+  - [ ] 執行狀態流轉邏輯
+  - [ ] 執行計數器更新
 
-### 10. 功能擴展
-- [ ] **排程增強**
-  - [ ] Cron 表達式驗證
-  - [ ] 視覺化排程設定介面
-  - [ ] 排程衝突檢測
-- [ ] **通知方式擴展**
-  - [ ] Slack 通知
-  - [ ] Webhook 通知
-  - [ ] SMS 簡訊通知
-- [ ] **前端管理介面**
-  - [ ] 排程任務管理頁面
-  - [ ] 執行歷史查詢介面
-  - [ ] Dashboard 儀表板
+- [ ] 實作健康檢查與監控
+  - [ ] GET `/health` - API 健康檢查
+  - [ ] GET `/health/db` - 資料庫連線檢查
+  - [ ] GET `/api/status` - 系統狀態總覽
 
-## 📋 立即要做的 3 件事
+- [ ] 實作安全性機制
+  - [ ] API 認證 (Bearer Token / API Key)
+  - [ ] 密碼加密儲存 (SMTP/FTP 密碼)
+  - [ ] 密碼解密機制
 
-1. **建立 `Database/01_create_tables.sql`** - 完成資料庫初始化
-2. **建立 API 專案結構** - 建立 `API/` 目錄並設定 FastAPI
-3. **整合 N8N 到 Docker Compose** - 讓系統可以完整啟動
+### 階段六：測試與文件
+- [ ] 撰寫單元測試
+  - [ ] CRUD API 測試
+  - [ ] 執行服務測試
+  - [ ] 資料驗證測試
+
+- [ ] 撰寫整合測試
+  - [ ] 端對端執行流程測試
+  - [ ] 錯誤處理測試
+
+- [ ] 建立 API 文件
+  - [ ] Swagger / OpenAPI 文件
+  - [ ] 使用範例
+  - [ ] 錯誤碼說明
+
+### 階段七：N8N 工作流程設定
+- [ ] 建立 N8N 工作流程
+  - [ ] 資料庫輪詢觸發器
+  - [ ] HTTP 任務執行流程
+  - [ ] Mail 任務執行流程
+  - [ ] FTP 任務執行流程
+  - [ ] 錯誤處理與通知
 
 ---
 
-## 🏷️ 標籤說明
-- 🔴 高優先級：核心功能，必須完成
-- 🟡 中優先級：重要功能，應盡快完成
-- 🟢 低優先級：優化項目，可後續規劃
+## 🔌 API 規格總覽
 
-## 📅 更新日期
-最後更新：2025-10-05
+### 1. HTTP 排程任務管理 API
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| POST | `/api/schedule/http` | 建立 HTTP 排程任務 |
+| GET | `/api/schedule/http` | 查詢 HTTP 排程任務列表 |
+| GET | `/api/schedule/http/{id}` | 查詢單一 HTTP 排程任務 |
+| PUT | `/api/schedule/http/{id}` | 更新 HTTP 排程任務 |
+| DELETE | `/api/schedule/http/{id}` | 刪除 HTTP 排程任務 |
+| PATCH | `/api/schedule/http/{id}/status` | 啟用/停用 HTTP 排程任務 |
+
+### 2. Mail 排程任務管理 API
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| POST | `/api/schedule/mail` | 建立 Mail 排程任務 |
+| GET | `/api/schedule/mail` | 查詢 Mail 排程任務列表 |
+| GET | `/api/schedule/mail/{id}` | 查詢單一 Mail 排程任務 |
+| PUT | `/api/schedule/mail/{id}` | 更新 Mail 排程任務 |
+| DELETE | `/api/schedule/mail/{id}` | 刪除 Mail 排程任務 |
+| PATCH | `/api/schedule/mail/{id}/status` | 啟用/停用 Mail 排程任務 |
+
+### 3. FTP 排程任務管理 API
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| POST | `/api/schedule/ftp` | 建立 FTP 排程任務 |
+| GET | `/api/schedule/ftp` | 查詢 FTP 排程任務列表 |
+| GET | `/api/schedule/ftp/{id}` | 查詢單一 FTP 排程任務 |
+| PUT | `/api/schedule/ftp/{id}` | 更新 FTP 排程任務 |
+| DELETE | `/api/schedule/ftp/{id}` | 刪除 FTP 排程任務 |
+| PATCH | `/api/schedule/ftp/{id}/status` | 啟用/停用 FTP 排程任務 |
+
+### 4. 執行服務 API (供 N8N 呼叫)
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| POST | `/api/execute/http/{id}` | 執行 HTTP 請求任務 |
+| POST | `/api/execute/mail/{id}` | 執行 Mail 發送任務 |
+| POST | `/api/execute/ftp/{id}` | 執行 FTP 傳輸任務 |
+| POST | `/api/execute/pending` | 批次執行待執行任務 |
+
+### 5. 例外記錄查詢 API
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| GET | `/api/exceptions` | 查詢例外記錄列表 |
+| GET | `/api/exceptions/{id}` | 查詢單一例外記錄 |
+| PATCH | `/api/exceptions/{id}/resolve` | 標記例外為已解決 |
+
+### 6. 執行歷史查詢 API
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| GET | `/api/history` | 查詢執行歷史列表 |
+| GET | `/api/history/{id}` | 查詢單一執行歷史 |
+| GET | `/api/history/statistics` | 查詢執行統計 |
+
+### 7. 健康檢查與監控 API
+| 方法 | 路徑 | 說明 |
+|------|------|------|
+| GET | `/health` | API 健康檢查 |
+| GET | `/health/db` | 資料庫連線檢查 |
+| GET | `/api/status` | 系統狀態總覽 |
+
+---
+
+## 📝 開發注意事項
+
+### 資料驗證
+- Cron 表達式驗證
+- Email 格式驗證
+- URL 格式驗證
+- 檔案路徑驗證
+
+### 安全性
+- SMTP 和 FTP 密碼需使用加密儲存 (建議使用 Fernet 或 AES)
+- 所有查詢使用參數化查詢防止 SQL 注入
+- API 認證機制 (Bearer Token 或 API Key)
+
+### 效能優化
+- 定期清理 `tblScheduleExecutionHistory` 和 `tblScheduleException` 舊資料
+- 定期重建索引維持查詢效能
+- 考慮使用 PostgreSQL 資料表分割功能
+
+### 錯誤處理
+- 統一的錯誤回應格式
+- 詳細的錯誤日誌記錄
+- 例外記錄自動寫入 `tblScheduleException`
+
+---
+
+**最後更新**: 2025-10-05
