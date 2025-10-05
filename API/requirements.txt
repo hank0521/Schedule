@@ -1,0 +1,35 @@
+# FastAPI 核心
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# 資料庫
+sqlalchemy==2.0.25
+asyncpg==0.29.0
+psycopg2-binary==2.9.9
+
+# Email 發送
+aiosmtplib==3.0.1
+email-validator==2.1.0
+
+# FTP 支援
+aioftp==0.21.4
+paramiko==3.4.0
+
+# HTTP 請求
+httpx==0.28.1
+
+# 安全性
+cryptography==42.0.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# 工具
+python-dotenv==1.0.0
+croniter==2.0.1
+python-multipart==0.0.6
+
+# 測試
+pytest==7.4.4
+pytest-asyncio==0.23.3

@@ -27,6 +27,53 @@ services:
       timeout: 5s
       retries: 5
 
+  # FastAPI 應用程式
+  api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    container_name: schedule_api
+    restart: unless-stopped
+    environment:
+      # 應用程式設定
+      APP_NAME: Schedule API
+      DEBUG: ${API_DEBUG:-False}
+
+      # 資料庫設定 (連接到 postgres 服務)
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-SYSDATA}
+      POSTGRES_USER: ${POSTGRES_USER:-sa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_secure_password}
+
+      # 安全性設定
+      SECRET_KEY: ${API_SECRET_KEY:-your-secret-key-change-in-production}
+      API_KEY: ${API_KEY:-your-api-key}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+
+      # CORS 設定
+      CORS_ORIGINS: ${CORS_ORIGINS:-["http://localhost:3000","http://localhost:8080"]}
+
+      # 日誌設定
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_FILE_MAX_BYTES: ${LOG_FILE_MAX_BYTES:-10485760}
+      LOG_FILE_BACKUP_COUNT: ${LOG_FILE_BACKUP_COUNT:-5}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./API/logs:/app/logs
+    networks:
+      - schedule_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
   # pgAdmin (PostgreSQL 管理介面，可選)
   pgadmin:
     image: dpage/pgadmin4:latest
