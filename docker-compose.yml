@@ -61,6 +61,7 @@ services:
     ports:
       - "${API_PORT:-8000}:8000"
     volumes:
+      - ./API:/app
       - ./API/logs:/app/logs
     networks:
       - schedule_network

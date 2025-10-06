@@ -6,6 +6,17 @@ from app.config import settings
 from app.routers import health
 from app.core.database import init_database, close_database
 from app.core.logger import get_logger
+from fastapi.responses import HTMLResponse
+from app.routers import mail
+
+
+# ----------------------------------------------------
+# 
+#           把測試用的 print 加在這裡
+#
+print("--- 檔案已被重新載入！ Hello, Win11 to Docker Sync! ---")
+#
+# ----------------------------------------------------
 
 logger = get_logger(__name__)
 
@@ -55,6 +66,7 @@ app.add_middleware(
 
 # 註冊路由
 app.include_router(health.router)
+app.include_router(mail.router)
 
 # 根路徑
 @app.get("/", tags=["Root"])
@@ -65,9 +77,16 @@ async def root():
         "version": "1.0.0",
         "description": "自動化排程系統 API",
         "docs": "/docs",
-        "health": "/health"
+        "health": "/health",
+        "message": "test 1233232！"
     }
-
+@app.get("/hello", response_class=HTMLResponse, tags=["Test"]) # 步驟 2：加上 response_class=HTMLResponse
+async def hello():
+    """回傳一個簡單的 HTML 頁面"""
+    html_content = "<h1> Hello World! FastAPI! </h1>"
+    
+    # 步驟 3：現在可以直接回傳 HTML 字串，FastAPI 會自動處理
+    return html_content
 
 if __name__ == "__main__":
     import uvicorn
