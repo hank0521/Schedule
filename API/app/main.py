@@ -8,6 +8,7 @@ from app.core.database import init_database, close_database
 from app.core.logger import get_logger
 from fastapi.responses import HTMLResponse
 from app.routers import mail
+from app.routers import execute
 
 
 # ----------------------------------------------------
@@ -67,6 +68,7 @@ app.add_middleware(
 # 註冊路由
 app.include_router(health.router)
 app.include_router(mail.router)
+app.include_router(execute.router)
 
 # 根路徑
 @app.get("/", tags=["Root"])

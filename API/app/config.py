@@ -65,9 +65,20 @@ class Settings(BaseSettings):
     LOG_FILE_MAX_BYTES: int
     LOG_FILE_BACKUP_COUNT: int
 
+    # --- 新增區塊 ---
+    # 預設 SMTP 伺服器設定
+    # 當資料庫中的排程任務未指定 SMTP 伺服器時，將使用以下設定
+    DEFAULT_SMTP_HOST: str = ""
+    DEFAULT_SMTP_PORT: int = 587
+    DEFAULT_SMTP_USER: str = ""
+    DEFAULT_SMTP_PASS: str = ""
+    DEFAULT_SMTP_USE_SSL: bool = True
+    # --- 新增區塊結束 ---
+
     class Config:
         case_sensitive = True
 
 
 # 全域設定實例
 settings = Settings()
+

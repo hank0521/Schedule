@@ -31,7 +31,7 @@ class MailSchedule(Base):
     lastexecutetime = Column(TIMESTAMP)
     lastsuccesstime = Column(TIMESTAMP)
     lasterrormessage = Column(Text)
-    executecutecount = Column(Integer, default=0)
+    executecount = Column(Integer, default=0)
     successcount = Column(Integer, default=0)
     failurecount = Column(Integer, default=0)
     isenabled = Column(Boolean, default=True, index=True)
