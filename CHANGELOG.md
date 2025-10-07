@@ -1,5 +1,9 @@
 ## **\[0.1.0\] \- 2025-10-08**
 
+* 開發與測試環境
+  * API 文件 (Swagger UI): http://localhost:8000/docs
+
+  * 資料庫管理 (pgAdmin): http://localhost:5050
 ### **✨ 新增 (Added)**
 
 * **郵件任務執行功能**:  
